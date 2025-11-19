@@ -10,6 +10,7 @@ if (typeof window !== "undefined") {
 
 export default function ScrollTimeline() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -17,19 +18,31 @@ export default function ScrollTimeline() {
     offset: ["start end", "end start"],
   });
 
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.8, 1, 1, 0.8]);
 
   useEffect(() => {
-    if (!textRef.current || !sectionRef.current) return;
+    if (!bgRef.current || !sectionRef.current) return;
 
     const ctx = gsap.context(() => {
+      // Parallax background text
       gsap.to(textRef.current, {
-        y: -200,
+        y: 100,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top bottom",
           end: "bottom top",
+          scrub: 1.5,
+        },
+      });
+
+      // Background color shift
+      gsap.to(bgRef.current, {
+        backgroundColor: "#1a1a1a",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center",
+          end: "bottom center",
           scrub: 1,
         },
       });
@@ -38,80 +51,75 @@ export default function ScrollTimeline() {
     return () => ctx.revert();
   }, []);
 
-  const storyPoints = [
+  const narrativeSteps = [
     {
-      year: "1886",
-      title: "The Beginning",
-      description: "A pharmacist in Atlanta creates a distinctive beverage.",
+      title: "1886",
+      text: "It started with a secret formula in Atlanta.",
+      align: "left",
     },
     {
-      year: "1950s",
-      title: "Global Expansion",
-      description: "Coca-Cola becomes a worldwide symbol of refreshment.",
+      title: "Global Icon",
+      text: "From a local soda fountain to the most recognized brand in the world.",
+      align: "right",
     },
     {
-      year: "1995",
-      title: "Uganda Operations",
-      description: "Establishing roots in the Pearl of Africa.",
+      title: "In Uganda",
+      text: "Refreshing the Pearl of Africa for decades, building communities and sharing happiness.",
+      align: "left",
     },
     {
-      year: "2025",
-      title: "Innovation Today",
-      description: "Leading sustainability and community initiatives.",
+      title: "The Future",
+      text: "Sustainable, innovative, and always refreshing. The story continues with you.",
+      align: "center",
     },
   ];
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen py-20 overflow-hidden">
-      {/* Fixed background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900" />
+    <section ref={sectionRef} className="relative min-h-[200vh] py-20 overflow-hidden">
+      {/* Parallax Background Layer */}
+      <div ref={bgRef} className="absolute inset-0 bg-[#E6242B] transition-colors duration-700">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent" />
 
-      {/* Large background text */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-5 dark:opacity-10 pointer-events-none">
-        <div ref={textRef} className="text-[20rem] font-bold text-[#E6242B] whitespace-nowrap">
-          HERITAGE
+        {/* Giant Text */}
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+          <div
+            ref={textRef}
+            className="text-[15vw] md:text-[20vw] font-black text-white opacity-10 whitespace-nowrap select-none"
+            style={{ transform: "translateY(-100px)" }}
+          >
+            LEGACY
+          </div>
         </div>
       </div>
 
-      {/* Content */}
-      <motion.div
-        style={{ opacity, scale }}
-        className="container mx-auto px-4 relative z-10"
-      >
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-6xl font-bold text-center mb-16 text-gray-900 dark:text-white"
-        >
-          Our Journey Through Time
-        </motion.h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {storyPoints.map((point, idx) => (
+      {/* Scrolling Narrative Content */}
+      <div className="relative z-10 container mx-auto px-4">
+        <div className="flex flex-col gap-[40vh]">
+          {narrativeSteps.map((step, idx) => (
             <motion.div
-              key={point.year}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ delay: idx * 0.2, type: "spring", stiffness: 100 }}
-              className="relative"
+              key={idx}
+              initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className={`flex ${step.align === "left" ? "justify-start" :
+                  step.align === "right" ? "justify-end" : "justify-center"
+                }`}
             >
-              <motion.div
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700"
+              <div className={`max-w-xl p-8 md:p-12 rounded-3xl backdrop-blur-md bg-white/10 border border-white/20 text-white shadow-2xl
+                ${step.align === "center" ? "text-center" : "text-left"}`}
               >
-                <div className="text-5xl font-bold text-[#E6242B] mb-4">{point.year}</div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-                  {point.title}
+                <h3 className="text-4xl md:text-6xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-white/80">
+                  {step.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">{point.description}</p>
-              </motion.div>
+                <p className="text-xl md:text-2xl font-medium leading-relaxed text-white/90">
+                  {step.text}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

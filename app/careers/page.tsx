@@ -93,7 +93,7 @@ export default function CareersPage() {
                       <p className="text-gray-700 dark:text-gray-300 mb-6 whitespace-pre-wrap">
                         {job.description}
                       </p>
-                      <Link href="/auth/sign-in">
+                      <Link href="/sign-in">
                         <Button variant="primary">Apply Now</Button>
                       </Link>
                     </div>

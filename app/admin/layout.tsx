@@ -2,7 +2,7 @@ import React from "react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, SignOutButton } from "@clerk/nextjs";
 
 export const metadata = {
   title: "Admin Dashboard - Coca-Cola",
@@ -12,7 +12,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const { userId } = await auth();
 
   if (!userId) {
-    redirect("/auth/sign-in");
+    redirect("/sign-in");
   }
 
   const navLinks = [
@@ -51,6 +51,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               View Site
             </Link>
             <UserButton afterSignOutUrl="/" />
+            <div className="hidden md:block">
+              <SignOutButton>
+                <button className="text-sm text-red-600 hover:text-red-700 font-medium">
+                  Sign Out
+                </button>
+              </SignOutButton>
+            </div>
           </div>
         </div>
       </header>

@@ -9,6 +9,7 @@
  */
 
 import type * as forms from "../forms.js";
+import type * as history from "../history.js";
 import type * as jobs from "../jobs.js";
 import type * as media from "../media.js";
 
@@ -20,6 +21,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   forms: typeof forms;
+  history: typeof history;
   jobs: typeof jobs;
   media: typeof media;
 }>;

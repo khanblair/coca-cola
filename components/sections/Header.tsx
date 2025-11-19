@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import ThemeSwitcher from "@/components/ui/ThemeSwitcher";
 import Button from "@/components/ui/Button";
@@ -11,6 +12,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { user } = useUser();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +21,11 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Hide header on admin and auth pages
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/sign-in") || pathname?.startsWith("/sign-up")) {
+    return null;
+  }
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -82,9 +89,9 @@ export default function Header() {
         {/* Actions */}
         <div className="flex items-center space-x-4">
           <ThemeSwitcher />
-          <Link href="/auth/sign-in" className="hidden lg:block">
+          <Link href={user ? "/admin" : "/sign-in"} className="hidden lg:block">
             <Button variant="outline" className="text-sm">
-              Admin Panel
+              {user ? "Dashboard" : "Admin Panel"}
             </Button>
           </Link>
 
@@ -155,7 +162,7 @@ export default function Header() {
                   </Link>
                 </motion.div>
               ))}
-              <Link href="/auth/sign-in" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link href="/sign-in" onClick={() => setIsMobileMenuOpen(false)}>
                 <Button variant="primary" className="w-full">
                   Admin Panel
                 </Button>
