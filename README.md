@@ -281,4 +281,4 @@ This project is created for demonstration purposes. All Coca-Cola branding and t
 
 ---
 
-**Note**: This is a demonstration project showcasing modern web development techniques. It is not affiliated with The Coca-Cola Company.
+**Note**: This is a demonstration project showcasing modern web development techniques. It is not affiliated with The Coca-Cola Company. It's something like a clone of the Coca-Cola Uganda website.
