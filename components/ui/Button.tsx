@@ -1,81 +1,56 @@
-"use client";
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-// Framer Motion's intrinsic element typing can conflict with native button props (onDrag types).
-// Create a loosely-typed MotionButton to avoid TypeScript incompatibilities when spreading native props.
-const MotionButton: any = motion.button;
-import { cn } from "@/lib/utils";
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
 
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "ghost" | "outline";
-};
+import { cn } from "@/lib/utils"
 
-export default function Button({
-  children,
-  className = "",
-  variant = "primary",
-  onClick,
-  ...props
-}: Props) {
-  const [ripples, setRipples] = useState<{ x: number; y: number; id: number }[]>([]);
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const id = Date.now();
-
-    setRipples((prev) => [...prev, { x, y, id }]);
-
-    // Remove ripple after animation
-    setTimeout(() => {
-      setRipples((prev) => prev.filter((r) => r.id !== id));
-    }, 600);
-
-    onClick?.(e);
-  };
-
-  const variants: Record<string, string> = {
-    primary:
-      "bg-[#E6242B] text-white hover:shadow-[0_0_20px_rgba(230,36,43,0.6)] dark:shadow-[0_0_25px_rgba(230,36,43,0.8)]",
-    ghost:
-      "bg-transparent border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800",
-    outline:
-      "bg-transparent border-2 border-[#E6242B] text-[#E6242B] hover:bg-[#E6242B] hover:text-white",
-  };
-
-  return (
-    <MotionButton
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: "spring", stiffness: 400, damping: 17 }}
-      className={cn(
-        "relative overflow-hidden px-6 py-3 rounded-lg font-semibold transition-all duration-300 ease-out",
-        variants[variant],
-        className
-      )}
-      onClick={handleClick}
-      {...props}
-    >
-      {/* Ripple effect */}
-      {ripples.map((ripple) => (
-        <motion.span
-          key={ripple.id}
-          aria-hidden
-          className="absolute rounded-full bg-white/40 pointer-events-none"
-          style={{
-            left: ripple.x,
-            top: ripple.y,
-            transform: "translate(-50%, -50%)",
-            width: 0,
-            height: 0,
-          }}
-          initial={{ width: 0, height: 0, opacity: 1 }}
-          animate={{ width: 400, height: 400, opacity: 0, transform: "translate(-50%, -50%)" }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        />
-      ))}
-      <span className="relative z-10">{children}</span>
-    </MotionButton>
-  );
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  VariantProps<typeof buttonVariants> {
+  asChild?: boolean
 }
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }

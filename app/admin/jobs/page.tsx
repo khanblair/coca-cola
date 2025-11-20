@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { motion, AnimatePresence } from "framer-motion";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import type { Id } from "@/convex/_generated/dataModel";
 
 export default function JobsAdminPage() {
@@ -59,7 +59,7 @@ export default function JobsAdminPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Job Postings</h1>
-        <Button onClick={() => setIsCreating(!isCreating)} variant="primary">
+        <Button onClick={() => setIsCreating(!isCreating)} variant="default">
           {isCreating ? "Cancel" : "+ New Job"}
         </Button>
       </div>
@@ -131,7 +131,7 @@ export default function JobsAdminPage() {
                 />
               </div>
               <div className="flex gap-3">
-                <Button type="submit" variant="primary">
+                <Button type="submit" variant="default">
                   {editingId ? "Update Job" : "Create Job"}
                 </Button>
                 <Button
@@ -168,11 +168,10 @@ export default function JobsAdminPage() {
                     {job.title}
                   </h3>
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      job.isActive
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${job.isActive
                         ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                         : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
-                    }`}
+                      }`}
                   >
                     {job.isActive ? "Active" : "Inactive"}
                   </span>

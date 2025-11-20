@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Protect, UserButton } from "@clerk/nextjs";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 export default function AdminDashboard() {
@@ -29,8 +29,8 @@ export default function AdminDashboard() {
                             key={tab}
                             onClick={() => setActiveTab(tab as any)}
                             className={`px-4 py-2 rounded-lg font-medium capitalize transition-colors ${activeTab === tab
-                                    ? "bg-[#E6242B] text-white"
-                                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                ? "bg-[#E6242B] text-white"
+                                : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
                                 }`}
                         >
                             {tab}

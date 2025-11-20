@@ -1,12 +1,14 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import ThemeSwitcher from "@/components/ui/ThemeSwitcher";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -14,16 +16,19 @@ export default function Header() {
   const pathname = usePathname();
   const { user } = useUser();
 
+  // Show a subtle background when the page is scrolled
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Hide header on admin and auth pages
-  if (pathname?.startsWith("/admin") || pathname?.startsWith("/sign-in") || pathname?.startsWith("/sign-up")) {
+  // Hide header on admin & auth pages
+  if (
+    pathname?.startsWith("/admin") ||
+    pathname?.startsWith("/sign-in") ||
+    pathname?.startsWith("/sign-up")
+  ) {
     return null;
   }
 
@@ -52,16 +57,17 @@ export default function Header() {
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
-          <motion.div
-            whileHover={{ scale: 1.05, rotate: 5 }}
-            transition={{ type: "spring", stiffness: 400 }}
-            className="text-2xl font-bold text-[#E6242B]"
-          >
-            Coca-Cola
-          </motion.div>
+          <div className="relative h-8 w-24 sm:w-32 md:w-40">
+            <Image
+              src="/images/Coca-Cola-logo.png"
+              alt="Coca-Cola Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Desktop navigation */}
         <div className="hidden lg:flex items-center space-x-8">
           {navLinks.map((link) => (
             <Link
@@ -69,9 +75,7 @@ export default function Header() {
               href={link.href}
               className={cn(
                 "relative text-sm font-medium transition-colors hover:text-[#E6242B]",
-                pathname === link.href
-                  ? "text-[#E6242B]"
-                  : "text-gray-700 dark:text-gray-300"
+                pathname === link.href ? "text-[#E6242B]" : "text-gray-700 dark:text-gray-300"
               )}
             >
               {link.label}
@@ -131,7 +135,7 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -153,9 +157,7 @@ export default function Header() {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={cn(
                       "block py-2 text-lg font-medium",
-                      pathname === link.href
-                        ? "text-[#E6242B]"
-                        : "text-gray-700 dark:text-gray-300"
+                      pathname === link.href ? "text-[#E6242B]" : "text-gray-700 dark:text-gray-300"
                     )}
                   >
                     {link.label}
@@ -163,7 +165,7 @@ export default function Header() {
                 </motion.div>
               ))}
               <Link href="/sign-in" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button variant="primary" className="w-full">
+                <Button variant="default" className="w-full">
                   Admin Panel
                 </Button>
               </Link>

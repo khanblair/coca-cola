@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 export default function SignInForm() {
     const { isLoaded, signIn, setActive } = useSignIn();

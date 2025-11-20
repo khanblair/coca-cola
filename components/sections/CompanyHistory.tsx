@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import RevealText from "@/components/ui/RevealText";
+import MotionWrapper from "@/components/ui/MotionWrapper";
 
 export default function CompanyHistory() {
     // Fetch history from Convex
@@ -29,19 +30,17 @@ export default function CompanyHistory() {
 
             <div className="container mx-auto px-4 relative z-10">
                 {/* Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                <MotionWrapper
+                    direction="up"
                     className="text-center mb-20"
                 >
-                    <h2 className="text-4xl md:text-6xl font-bold mb-4 text-[#E6242B]">
+                    <h2 className="text-4xl md:text-6xl font-bold mb-4 text-primary">
                         <RevealText text="Our History" />
                     </h2>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                         A timeline of refreshment, innovation, and community impact.
                     </p>
-                </motion.div>
+                </MotionWrapper>
 
                 {/* Vertical Timeline */}
                 <div className="relative max-w-5xl mx-auto">

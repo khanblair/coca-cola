@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { motion, AnimatePresence } from "framer-motion";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function CareersPage() {
@@ -94,7 +94,7 @@ export default function CareersPage() {
                         {job.description}
                       </p>
                       <Link href="/sign-in">
-                        <Button variant="primary">Apply Now</Button>
+                        <Button variant="default">Apply Now</Button>
                       </Link>
                     </div>
                   </motion.div>

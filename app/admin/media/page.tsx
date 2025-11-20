@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { motion, AnimatePresence } from "framer-motion";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import type { Id } from "@/convex/_generated/dataModel";
 
 export default function MediaAdminPage() {
@@ -69,7 +69,7 @@ export default function MediaAdminPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Media Center</h1>
-        <Button onClick={() => setIsCreating(!isCreating)} variant="primary">
+        <Button onClick={() => setIsCreating(!isCreating)} variant="default">
           {isCreating ? "Cancel" : "+ New Article"}
         </Button>
       </div>
@@ -167,7 +167,7 @@ export default function MediaAdminPage() {
                 </div>
               </div>
               <div className="flex gap-3">
-                <Button type="submit" variant="primary">
+                <Button type="submit" variant="default">
                   {editingId ? "Update Article" : "Create Article"}
                 </Button>
                 <Button

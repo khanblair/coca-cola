@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProductCard from "@/components/ui/ProductCard";
+import MotionWrapper from "@/components/ui/MotionWrapper";
+import { Button } from "@/components/ui/button";
 
 const brands = [
     {
@@ -9,6 +11,7 @@ const brands = [
         name: "Coca-Cola",
         color: "#E6242B",
         category: "Sparkling",
+        image: "/images/coke.png",
         nutrition: { calories: 140, sugar: 39 },
     },
     {
@@ -16,6 +19,7 @@ const brands = [
         name: "Fanta",
         color: "#F7941E",
         category: "Sparkling",
+        image: "/images/fanta.png", // Placeholder
         nutrition: { calories: 160, sugar: 44 },
     },
     {
@@ -23,6 +27,7 @@ const brands = [
         name: "Sprite",
         color: "#008B47",
         category: "Sparkling",
+        image: "/images/sprite.png", // Placeholder
         nutrition: { calories: 140, sugar: 38 },
     },
     {
@@ -30,6 +35,7 @@ const brands = [
         name: "Minute Maid",
         color: "#000000",
         category: "Juice",
+        image: "/images/minute-maid.png", // Placeholder
         nutrition: { calories: 110, sugar: 24 },
     },
     {
@@ -37,6 +43,7 @@ const brands = [
         name: "Rwenzori",
         color: "#00AEEF",
         category: "Water",
+        image: "/images/rwenzori.png", // Placeholder
         nutrition: { calories: 0, sugar: 0 },
     },
 ];
@@ -71,23 +78,47 @@ export default function BrandsShowcase() {
             />
 
             <div className="container mx-auto px-4">
-                <h2 className="text-4xl md:text-6xl font-bold text-center mb-12 text-gray-900 dark:text-white">
-                    Our Brands
-                </h2>
+                <MotionWrapper direction="up">
+                    <h2 className="text-4xl md:text-6xl font-bold text-center mb-12 text-foreground">
+                        Our Brands
+                    </h2>
+                </MotionWrapper>
+
+                {/* Infinite Scroll Marquee */}
+                <div className="relative flex overflow-x-hidden mb-16 group">
+                    <div className="animate-marquee whitespace-nowrap flex gap-8">
+                        {[...brands, ...brands, ...brands].map((brand, index) => (
+                            <span
+                                key={index}
+                                className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400 dark:from-gray-800 dark:to-gray-700 opacity-30 uppercase"
+                            >
+                                {brand.name}
+                            </span>
+                        ))}
+                    </div>
+                    <div className="absolute top-0 animate-marquee2 whitespace-nowrap flex gap-8">
+                        {[...brands, ...brands, ...brands].map((brand, index) => (
+                            <span
+                                key={index}
+                                className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400 dark:from-gray-800 dark:to-gray-700 opacity-30 uppercase"
+                            >
+                                {brand.name}
+                            </span>
+                        ))}
+                    </div>
+                </div>
 
                 {/* Category Filter */}
                 <div className="flex justify-center gap-4 mb-16 flex-wrap">
                     {categories.map((cat) => (
-                        <button
+                        <Button
                             key={cat}
                             onClick={() => setActiveCategory(cat)}
-                            className={`px-6 py-2 rounded-full text-lg font-medium transition-all duration-300 ${activeCategory === cat
-                                    ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900 scale-110"
-                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
-                                }`}
+                            variant={activeCategory === cat ? "default" : "outline"}
+                            className={`rounded-full text-lg px-6 py-2 transition-all duration-300 ${activeCategory === cat ? "scale-110" : ""}`}
                         >
                             {cat}
-                        </button>
+                        </Button>
                     ))}
                 </div>
 
@@ -111,6 +142,7 @@ export default function BrandsShowcase() {
                                 <ProductCard
                                     name={brand.name}
                                     color={brand.color}
+                                    image={brand.image}
                                     nutrition={brand.nutrition}
                                 />
                             </motion.div>

@@ -2,6 +2,7 @@
 import React from "react";
 import FeaturedArticle from "@/components/ui/FeaturedArticle";
 import NewsTicker from "@/components/ui/NewsTicker";
+import MotionWrapper from "@/components/ui/MotionWrapper";
 
 export default function MediaCenter() {
     const headlines = [
@@ -15,9 +16,11 @@ export default function MediaCenter() {
     return (
         <section className="py-20 bg-black text-white min-h-screen flex flex-col justify-center overflow-hidden">
             <div className="container mx-auto px-4 mb-12">
-                <h2 className="text-4xl md:text-6xl font-bold text-center mb-16">
-                    Media Center
-                </h2>
+                <MotionWrapper direction="up">
+                    <h2 className="text-4xl md:text-6xl font-bold text-center mb-16">
+                        Media Center
+                    </h2>
+                </MotionWrapper>
 
                 <FeaturedArticle
                     title="Refreshing the World, One Community at a Time"

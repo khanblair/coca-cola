@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface ProductCardProps {
     name: string;
@@ -12,7 +13,7 @@ interface ProductCardProps {
     };
 }
 
-export default function ProductCard({ name, color, nutrition }: ProductCardProps) {
+export default function ProductCard({ name, color, image, nutrition }: ProductCardProps) {
     const [isFlipped, setIsFlipped] = useState(false);
 
     return (
@@ -35,8 +36,15 @@ export default function ProductCard({ name, color, nutrition }: ProductCardProps
                         className="w-32 h-32 rounded-full mb-6 flex items-center justify-center"
                         style={{ backgroundColor: `${color}20` }}
                     >
-                        {/* Placeholder for Product Image */}
-                        <div className="w-16 h-24 rounded-lg" style={{ backgroundColor: color }} />
+                        {/* Product Image */}
+                        <div className="relative w-20 h-32">
+                            <Image
+                                src={image || "/images/Coca-Cola-logo.png"}
+                                alt={name}
+                                fill
+                                className="object-contain drop-shadow-xl"
+                            />
+                        </div>
                     </div>
                     <h3 className="text-2xl font-bold text-center mb-2" style={{ color }}>{name}</h3>
                     <p className="text-gray-500 text-sm text-center">Hover to see facts</p>

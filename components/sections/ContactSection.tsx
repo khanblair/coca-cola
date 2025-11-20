@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 export default function ContactSection() {
     const submitContact = useMutation(api.forms.submitContact);

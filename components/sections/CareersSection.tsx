@@ -4,6 +4,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import JobCard from "@/components/ui/JobCard";
 import { motion } from "framer-motion";
+import MotionWrapper from "@/components/ui/MotionWrapper";
 
 export default function CareersSection() {
     const jobs = useQuery(api.jobs.list);
@@ -38,20 +39,18 @@ export default function CareersSection() {
     return (
         <section className="py-20 bg-gray-50 dark:bg-gray-900 min-h-screen">
             <div className="container mx-auto px-4">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                <MotionWrapper
+                    direction="up"
                     className="text-center mb-16"
                 >
-                    <h2 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900 dark:text-white">
+                    <h2 className="text-4xl md:text-6xl font-bold mb-6 text-foreground">
                         Join Our Team
                     </h2>
-                    <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                         Be part of a global family that's making a difference in Uganda.
                         We offer competitive benefits and a vibrant work culture.
                     </p>
-                </motion.div>
+                </MotionWrapper>
 
                 <div className="space-y-6">
                     {displayJobs ? (
