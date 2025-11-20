@@ -1,19 +1,34 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import HeroSlider from "@/components/sections/HeroSlider";
 
 export default function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Attempt to play video on mount
+    if (videoRef.current) {
+      videoRef.current.play().catch((error) => {
+        console.log("Video autoplay failed:", error);
+        // Autoplay was prevented, but video will play when user interacts
+      });
+    }
+  }, []);
+
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-black">
       {/* Background GIF with Parallax-like fixed positioning */}
       <div className="absolute inset-0 z-0">
         <video
+          ref={videoRef}
           src="/videos/coca-cola-intro.mp4"
           autoPlay
           loop
           muted
+          playsInline
+          preload="auto"
           className="w-full h-full object-cover opacity-90"
         />
         {/* Gradient Overlay for Depth and Readability */}
